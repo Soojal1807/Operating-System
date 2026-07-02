@@ -34,3 +34,12 @@ int main() {
 
     return 0;
 }
+
+/* this is a simple implementation of buddy allocation, 
+it accepts process , first step is to check if process needs more memory then we 
+can provide, after that we try to allocate it memory based on power of 2 , since 
+computer is based of binary any calculation based on 2^n is easy, so after we find next biggest digit
+to memeory we need we allocate it and accept internal fragmentation, thing is we do not care much about it
+because it is an accepted trade-of for faster performance. It is not very practical where memory is tight
+we cannot use it and there will be lot of waste of memeory , but it can be used where we know for fact requirments will not be much
+maybe like small cli based applications.*/
