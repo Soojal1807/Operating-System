@@ -33,3 +33,5 @@ int main() {
     c.put(3);
     return 0;
 }
+
+// This implementation logic same as Queue i.e FIFO
