@@ -1,37 +1,35 @@
 #include <iostream>
-#include <queue>
-#include <unordered_set>
+#include <unordered_map>
+#include <list>
 
-class Cache {
-    int cap;
-    std::queue<int> q;
-    std::unordered_set<int> s;
+class LRUCache {
+    int cap;   
+    std::list<int> cacheList; //list to store keys
+    std::unordered_map<int, std::list<int>::iterator> cacheMap;
 
 public:
-    Cache(int c) : cap(c) {}
+    LRUCache(int capacity) : cap(capacity) {}
 
-    void get(int k) {
-        if (s.find(k) == s.end()) return;
+    int get(int key) {
+        if (cacheMap.find(key) == cacheMap.end()) return -1;
+        
+        cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
+        return *cacheMap[key];
     }
 
-    void put(int k) {
-        if (s.find(k) != s.end()) return;
-        if (s.size() == cap) {
-            s.erase(q.front());
-            q.pop();
+    void put(int key, int value) {
+        if (cacheMap.find(key) != cacheMap.end()) {
+            cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
+            return;
         }
-        q.push(k);
-        s.insert(k);
+
+        if (cacheList.size() == cap) {
+            int last = cacheList.back();
+            cacheMap.erase(last);
+            cacheList.pop_back();
+        }
+
+        cacheList.push_front(key);
+        cacheMap[key] = cacheList.begin();
     }
 };
-
-
-int main() {
-    Cache c(2);
-    c.put(1);
-    c.put(2);
-    c.put(3);
-    return 0;
-}
-
-// This implementation logic same as Queue i.e FIFO
